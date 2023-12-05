@@ -1,0 +1,57 @@
+let myCity;
+
+class Cityscape {
+  constructor() {
+    this.buildingColors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff'];
+    this.buildingDuration = 2000; // Duration buildings stay on the screen in milliseconds
+    this.buildingsStartTime = 0; // Variable to store the time when buildings were first drawn
+  }
+
+  drawCity() {
+    // Draw sky
+    background('#87CEEB'); // Sky Blue
+
+    // Draw sun
+    fill('#FFFF00'); // Yellow
+    ellipse(width - 100, 100, 80, 80);
+
+    // Draw ground
+    fill('#00ff00'); // Green
+    rect(0, height - 50, width, 50);
+
+    // Draw buildings within the specified duration
+    if (millis() - this.buildingsStartTime < this.buildingDuration) {
+      for (let i = 0; i < 5; i++) {
+        let buildingWidth = random(50, 150);
+        let buildingHeight = random(100, 300);
+        let buildingColor = random(this.buildingColors);
+        let xPosition = random(width - buildingWidth); // Random x position
+
+        fill(buildingColor);
+        rect(xPosition, height - 50 - buildingHeight, buildingWidth, buildingHeight);
+
+        // Building details
+        fill('#808080'); // Gray
+        rect(xPosition + 10, height - 50 - buildingHeight - 20, buildingWidth - 20, 20);
+
+        fill('#000000'); // Black
+        rect(xPosition + 10 + buildingWidth / 2 - 10, height - 50 - buildingHeight - 40, 20, 20);
+
+        fill('#FFFF00'); // Yellow
+        ellipse(xPosition + buildingWidth / 2, height - 50 - buildingHeight - 60, 30, 30);
+      }
+    } else {
+      // If the specified duration has passed, reset the start time for the next iteration
+      this.buildingsStartTime = millis();
+    }
+  }
+}
+
+function setup() {
+  createCanvas(800, 400);
+  myCity = new Cityscape();
+}
+
+function draw() {
+  myCity.drawCity();
+}
